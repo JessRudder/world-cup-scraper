@@ -24,7 +24,11 @@ loop do
   else
     team = Team.find_by_name(command)
     if team
+      puts ""
+      puts "#######{team.name}######}"
       puts team.profile
+      puts ""
+      puts ""
     else
       puts "I don't know that team, please try again."
     end

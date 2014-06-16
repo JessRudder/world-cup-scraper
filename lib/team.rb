@@ -1,5 +1,5 @@
 class Team
-  attr_accessor :profile_url
+  attr_accessor :profile_url, :profile
 
   @@all = []
 
@@ -17,6 +17,7 @@ class Team
 
   def initialize(profile_url)
     @profile_url = profile_url
+    @team_profile = Nokogiri::HTML(open(profile_url.gsub("index", "profile-detail")))
     @doc = Nokogiri::HTML(open(profile_url))
     @@all << self
   end
@@ -24,6 +25,11 @@ class Team
   def name
     @name ||= doc.search("span.fdh-flag img").collect{|i| i['alt']}[0]
   end
+
+  def profile
+    @profile ||= @team_profile.css("div.article-body p").text
+    #binding.pry
+  end  
 
   # private 
     attr_reader :doc
