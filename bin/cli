@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require_relative '../config/environment'
+
+puts "Welcome to the World Cup!"
+
+# This program accepts the following commands:
+# list -> List Out all the students
+# show -> Show a student by name.
+
+TeamScraper.new("http://www.fifa.com/worldcup/teams/index.html").scrape_teams
+
+loop do
+  puts "Type list to see a list of teams or enter a country to see their profile."
+  command = gets.strip
+
+  if command == "list"
+    Team.all.each_with_index do |team, i|
+      puts "#{i+1}. #{team.name}"
+    end
+  elsif command == "exit"
+    puts "Goodbye!"
+    break
+  else
+    team = Team.find_by_name(command)
+    if team
+      puts team.profile
+    else
+      puts "I don't know that team, please try again."
+    end
+  end
+end
